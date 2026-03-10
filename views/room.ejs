@@ -2,26 +2,38 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Video Call & Chat</title>
   <script> const ROOM_ID = "<%= roomId %>" </script>
-  <!-- Library untuk Video Call & Real-time -->
   <script defer src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
   <script src="/socket.io/socket.io.js" defer></script>
   <script src="script.js" defer></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="main-container">
-    <div id="video-grid"></div> <!-- Tempat Video -->
-
-    <div id="chat-panel">
-      <div id="message-container"></div>
-      <form id="send-container">
-        <input type="text" id="message-input" placeholder="Ketik pesan...">
-        <button type="submit" id="send-button">Kirim</button>
-      </form>
+  <% if (!authorized) { %>
+    <!-- JIKA BELUM INPUT PASSWORD -->
+    <div style="position:fixed; top:0; left:0; width:100%; height:100%; background: #121212; display:flex; justify-content:center; align-items:center; z-index:10000;">
+      <div style="text-align:center; background:#1e1e1e; padding:40px; border-radius:15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        <h2 style="color:white; margin-bottom:20px;">Room Terkunci 🔒</h2>
+        <form action="/join-room/<%= roomId %>" method="POST">
+          <input type="password" name="password" placeholder="Masukkan Password Room" style="padding:12px; width:200px; border-radius:5px; border:none; margin-bottom:15px;" required>
+          <br><button type="submit" style="padding:10px 25px; background:#007bff; border:none; color:white; border-radius:5px; cursor:pointer; font-weight:bold;">Masuk ke Room</button>
+        </form>
+        <br><a href="/" style="color:#777; text-decoration:none; font-size:12px;">Kembali ke Lobby</a>
+      </div>
     </div>
-  </div>
+  <% } else { %>
+    <!-- TAMPILAN UTAMA (FITUR LAMA ANDA) -->
+    <div id="main-container">
+      <div id="video-grid"></div>
+      <div id="chat-panel">
+        <div id="message-container"></div>
+        <form id="send-container">
+          <input type="text" id="message-input" placeholder="Ketik pesan...">
+          <button type="submit" id="send-button">Kirim</button>
+        </form>
+      </div>
+    </div>
+  <% } %>
 </body>
 </html>
