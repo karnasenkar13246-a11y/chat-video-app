@@ -4,15 +4,21 @@ const messageContainer = document.getElementById('message-container');
 const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
 
-// 1. MINTA NAMA USER SAAT PERTAMA BUKA
-const userName = prompt('Siapa nama Anda?') || 'User Asing';
+// 1. CEK APAKAH NAMA SUDAH TERSIMPAN DI MEMORI HP/BROWSER
+let userName = localStorage.getItem('chat-username');
 
-// 2. SETUP PEERJS (Kosongkan agar pakai server publik)
-const myPeer = new Peer(); 
-
-const myVideo = document.createElement('video');
-myVideo.muted = true; // Agar suara kita tidak memantul (echo)
-const peers = {};
+// 2. JIKA BELUM ADA, BARU MINTA INPUT
+if (!userName) {
+  userName = prompt('Siapa nama Anda?');
+  
+  // Jika user klik cancel atau kosong, beri nama default
+  if (!userName || userName.trim() === "") {
+    userName = 'User-' + Math.floor(Math.random() * 1000);
+  }
+  
+  // SIMPAN KE MEMORI HP AGAR TIDAK TANYA LAGI
+  localStorage.setItem('chat-username', userName);
+}
 
 // 3. AMBIL AKSES KAMERA & MICROPHONE
 navigator.mediaDevices.getUserMedia({
