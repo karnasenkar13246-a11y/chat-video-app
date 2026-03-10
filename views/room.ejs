@@ -15,7 +15,7 @@
     <div style="position:fixed; top:0; left:0; width:100%; height:100%; background: #121212; display:flex; justify-content:center; align-items:center; z-index:10000;">
       <div style="text-align:center; background:#1e1e1e; padding:40px; border-radius:15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         <h2 style="color:white; margin-bottom:20px;">Room Terkunci 🔒</h2>
-        <form action="/join-room/<%= roomId %>" method="POST">
+        <form action="/<%= roomId %>" method="POST">
           <input type="password" name="password" placeholder="Masukkan Password Room" style="padding:12px; width:200px; border-radius:5px; border:none; margin-bottom:15px;" required>
           <br><button type="submit" style="padding:10px 25px; background:#007bff; border:none; color:white; border-radius:5px; cursor:pointer; font-weight:bold;">Masuk ke Room</button>
         </form>

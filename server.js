@@ -42,14 +42,24 @@ app.post('/create-room', async (req, res) => {
 });
 
 // CEK PASSWORD (Fitur Baru)
-app.post('/join-room/:room', async (req, res) => {
+app.get('/:room', async (req, res) => {
+  const room = await Room.findOne({ roomId: req.params.room });
+  if (!room) return res.redirect('/');
+  
+  // Tampilkan halaman room (dalam keadaan terkunci / authorized: false)
+  res.render('room', { roomId: req.params.room, authorized: false });
+});
+
+// 2. Rute saat user mengirim password (POST) di URL yang sama
+app.post('/:room', async (req, res) => {
   const room = await Room.findOne({ roomId: req.params.room });
   if (room) {
     const match = await bcrypt.compare(req.body.password, room.password);
     if (match) {
-      // Jika password benar, tampilkan room dengan status authorized
+      // Jika password benar, tampilkan room (unlocked / authorized: true)
       res.render('room', { roomId: req.params.room, authorized: true });
     } else {
+      // Jika salah, balikkan ke lobby dengan pesan error
       res.render('index', { error: 'Password Salah!' });
     }
   } else {
